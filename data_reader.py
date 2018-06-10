@@ -28,10 +28,10 @@ v  =  {'T salon' :                     {'ref':'th', 'id':1, 'unit':'°C'},
        'T in ECS':                     {'ref':'flux', 'id':11, 'unit':'°C'},
        'T out ECS':                    {'ref':'flux', 'id':12, 'unit':'°C'},
          
-       'Stock batteries':              {'ref':'sol', 'id':1, 'unit':'KWh'},
-       'Entrees elec':                 {'ref':'sol', 'id':2, 'unit':'KWh/s'},
-       'Sorties elec':                 {'ref':'sol', 'id':3, 'unit':'KWh/s'},
-       'Tension panneaux':             {'ref':'sol', 'id':4, 'unit':'V'}}
+       'Stock batteries':              {'ref':'sol', 'id':1, 'unit':'kWh'},
+       'Entrees elec':                 {'ref':'sol', 'id':2, 'unit':'kWh/s'},
+       'Sorties elec':                 {'ref':'sol', 'id':3, 'unit':'kWh/s'},
+       'Entree batteries':             {'ref':'sol', 'id':4, 'unit':'kWh/s'}}
 
 class measures(object):
     
@@ -42,7 +42,7 @@ class measures(object):
             self.sort = True
         else:
             self.vals = None
-            self.sort = False
+            self.sort = True
         
     def app(self, val):
         if(not (self.vals is None)):
@@ -106,7 +106,7 @@ class measures(object):
         if(date >= self.vals[-1, 0]):
             return [len(self.vals)-1, self.vals[-1, 1]]
         
-        #On recherche l'intervl ou se trouve la date demandee par dichotomie
+        #On recherche l'interval ou se trouve la date demandee par dichotomie
         index_l, index_r = 0, len(self.vals)-1
         while(index_r-index_l != 1):
             new_index = int((index_r+index_l)/2)
@@ -134,10 +134,37 @@ class measures(object):
         #Calcul de l'integrale
         integrale = 0
         for i in range(index_l, index_r):
-            delta = (self.vals[i, 0]-self.vals[i+1, 0]).seconds
+            delta = (self.vals[i+1, 0]-self.vals[i, 0]).seconds
             avg = (self.vals[i, 1] + self.vals[i+1, 1])/2
             integrale += delta * avg
         return integrale
+    
+    def derivate(self, time):
+        
+        #Si on n'a qu'un point, ou aucun, la deriviee est nulle
+        if(self.vals is None or self.vals.shape[0]==1):
+            return 0
+        #On peut maintenant trier la liste serrainement
+        if(not self.sort):
+            self.vals = np.array(sorted(self.vals, key=lambda x:x[0]))
+            self.sort = True
+        #Recuperation de l'indice a gauche du point
+        index_l = self.get(time)[0]
+        #Si on est en dehors, on retourne 0
+        if(time < self.vals[0, 0] or time >= self.vals[-1, 0]):
+            return 0
+        
+        #maintenant, on peut se poser la question de la valeur de la derrivee
+        index_r = index_l+1
+        #indice a droite et calcule de la derviee
+        delta = (self.vals[index_r, 0]-self.vals[index_l, 0]).seconds
+        return (self.vals[index_r, 1]-self.vals[index_l, 1])/delta
+    
+    def derivate_glob(self, time, dt=datetime.timedelta(0, 150)):
+        
+        #Calcule d'une derivee plus douce sur un horizon de taille dt
+        l_val, r_val = self.get(time-dt)[1], self.get(time+dt)[1]
+        return (r_val-l_val)/(2*dt).seconds
 
 def get_values(val, start, end):
     first_date = start.date() - datetime.timedelta(1)

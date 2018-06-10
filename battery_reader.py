@@ -39,7 +39,7 @@ for file in files:
     #Creation du ficher .csv correspondant dans la base de donnees
     #Chemin d'acces du .csv courant*
     day = datetime.datetime.strptime(file, 'SI%d%m%y.LOG')
-    path = "data/%04d/%02d/elec_%02d.csv"%(day.year, day.month, day.day)
+    path = "data/%04d/%02d/sol_%02d.csv"%(day.year, day.month, day.day)
     print(path)
     
     if(not os.path.isdir('data')):
@@ -52,17 +52,17 @@ for file in files:
     if(not os.path.isdir("data/%04d/%02d"%(day.year, day.month))):
         os.mkdir("data/%04d/%02d"%(day.year, day.month))
         
-    path = "data/%04d/%02d/elec_%02d.csv"%(day.year, day.month, day.day)
+    path = "data/%04d/%02d/sol_%02d.csv"%(day.year, day.month, day.day)
     
     with open(path, 'w') as csv_file:
         #Ouverture du fichier
         spam_writer = csv.writer(csv_file, delimiter=';', lineterminator="\n")
                 #Nom des colomnes
         spam_writer.writerow(['Heure (HH:MM:SS)'] +
-                             ['StockBatteries (KWh)'] +
-                             ['EntreesElec (KWh/s)'] +
-                             ['SortiesElec (KWh/s)'] +
-                             ['TensionPanneaux (V)'])
+                             ['StockBatteries (kWh)'] +
+                             ['EntreesElec (kWh/s)'] +
+                             ['SortiesElec (kWh/s)'] +
+                             ['EntreeBatterie (kWh/s)'])
         
         for h in range(24):
             for m in range(12):
@@ -71,7 +71,7 @@ for file in files:
                 stock_bat = val.get(time)[1]
                 entree_elec = 0
                 sortie_elec = 0
-                tension = 0
+                tension = val.derivate_glob(time)
                 
                 #Puis on ecrit la ligne dans le fichier .csv
                 spam_writer.writerow(["%02d:%02d:00"%(h, 5*m)] +
