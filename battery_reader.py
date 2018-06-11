@@ -9,9 +9,10 @@ import csv
 import os
 import datetime
 import data_reader
+import const
 
 #Charge nominale de la batterie
-nominal_charge = 10.66 #kWh
+nominal_charge = const.stock_batteries_maxi #kWh
 
 #On liste tous les fichers a importer
 files = os.listdir('ImportBattery')

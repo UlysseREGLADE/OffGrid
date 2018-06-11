@@ -14,7 +14,7 @@ def t_elec(survie = False):
     if(survie):
         sortie_elec_moy = const.conso_elec_mini
     
-    if(entree_elec_moy > sortie_elec_moy):
+    if(entree_elec_moy>sortie_elec_moy or sortie_elec_moy-entree_elec_moy==0):
         return "infini"
     else:
         delta_bat = (const.stock_batteries_maxi-const.stock_batteries_mini)
@@ -76,7 +76,7 @@ def t_thermique(survie=False):
         stock_e_ballon = stock_e_ballon_1 + stock_e_ballon_2
         
         #Calcule du temps
-        if(sorties_ballons < entrees_ballons):
+        if(sorties_ballons<entrees_ballons or sorties_ballons-entrees_ballons==0):
             return "infini"
         else:
             ret = stock_e_ballon/(sorties_ballons-entrees_ballons)
@@ -111,7 +111,7 @@ def t_thermique(survie=False):
         stock_e_ballon = stock_e_ballon_1 + stock_e_ballon_2 + const.v_chauffage*const.c_air*(tintm-const.t_chauffage_mini)
         
         #Calcule du temps
-        if(sorties_ballons < entrees_ballons):
+        if(sorties_ballons<entrees_ballons or sorties_ballons-entrees_ballons==0):
             return "infini"
         else:
             ret = stock_e_ballon/(sorties_ballons-entrees_ballons)

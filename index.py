@@ -202,7 +202,7 @@ section h1
         </nav>
         
         <header>
-            <h1>Energy storage status</h1>
+            <h1>Autonomy at present</h1>
         </header>
 
         <section>
