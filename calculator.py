@@ -2,6 +2,8 @@ import const
 import datetime
 import data_reader as dr
 
+#ceci est un test
+
 def t_elec(survie = False):
     #On prend le temps courrant
     now = datetime.datetime.now()
