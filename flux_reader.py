@@ -11,10 +11,12 @@ import datetime
 import csv
 
 #excecution du programme de lecture ModBus
-os.system("C:/Users/HP/Desktop/serveur_off_grid_alpha0/MBSheet/MBSheete.exe /S:C:/Users/HP/Desktop/serveur_off_grid_alpha0/MBSheet/slist2.csv /Z:C:/Users/HP/Desktop/serveur_off_grid_alpha0/MBSheet/Log.csv  /L ")
+dn = os.path.dirname(__file__)
+print(dn)
+os.system(dn+"/MBSheet/MBSheete.exe /S:"+dn+"/MBSheet/slist2.csv /Z:"+dn+"/MBSheet/Log.csv  /L ")
 
 #Recuperation des valeurs d'interet du log dans la liste data
-with open('C:/Users/HP/Desktop/serveur_off_grid_alpha0/MBSheet/Log.csv', 'r') as csv_file:
+with open('MBSheet/Log.csv', 'r') as csv_file:
     spamreader = csv.reader(csv_file,
                             delimiter=';',
                             lineterminator="\n")
@@ -56,7 +58,7 @@ if(data != []):
     h = datetime.datetime.now().hour
     m = datetime.datetime.now().minute
     
-    to_write = ["%02d:%02d:00"%(h, m)] + [data[6]+data[3]]+[(data[7]+data[4])/2]+[(data[8]+data[5])/2] + [data[9]]+[data[10]]+[data[11]] + [data[0]]+[data[1]]+[data[2]] + [0]+[0]+[0]
+    to_write = ["%02d:%02d:00"%(h, m)] + [(data[6]+data[3])/3600]+[(data[7]+data[4])/2]+[(data[8]+data[5])/2] + [data[9]/3600]+[data[10]]+[data[11]] + [data[0]/3600]+[data[1]]+[data[2]] + [0]+[0]+[0]
     
     if(not os.path.exists(path)):
         with open(path, 'w') as csv_file:
