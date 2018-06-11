@@ -194,15 +194,15 @@ section h1
 		
         <nav>
             <ul>
-                <li><a href="loading.py">Energy</a></li>
-                <li><a href="index.py">Autonomy</a></li>
+                <li><a href="loading.py">Autonomy</a></li>
+                <li><a href="index.py">Energy</a></li>
 				<li><a href="graph.py">Charts</a></li>
 				<li><a href="index.py"><img src="images/refresh.png"></a></li>
             </ul>
         </nav>
         
         <header>
-            <h1>Autonomy at present</h1>
+            <h1>Energy storage status</h1>
         </header>
 
         <section>

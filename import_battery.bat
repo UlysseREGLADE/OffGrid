@@ -1,0 +1,1 @@
+C:\Users\HP\Anaconda3\python.exe "battery_reader.py"

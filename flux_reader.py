@@ -58,7 +58,7 @@ if(data != []):
     h = datetime.datetime.now().hour
     m = datetime.datetime.now().minute
     
-    to_write = ["%02d:%02d:00"%(h, m)] + [(data[6]+data[3])/3600]+[(data[7]+data[4])/2]+[(data[8]+data[5])/2] + [data[9]/3600]+[data[10]]+[data[11]] + [data[0]/3600]+[data[1]]+[data[2]] + [0]+[0]+[0]
+    to_write = ["%02d:%02d:00"%(h, m)] + [(data[6]+data[3])/3600]+[(data[7]*data[6]+data[4]*data[3])/(data[6]+data[3])]+[(data[8]+data[5])/2] + [data[9]/3600]+[data[10]]+[data[11]] + [data[0]/3600]+[data[1]]+[data[2]] + [0]+[0]+[0]
     
     if(not os.path.exists(path)):
         with open(path, 'w') as csv_file:

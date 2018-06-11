@@ -34,6 +34,7 @@ for file in files:
                 val.append(float(row[2].replace(',', '.'))+
                            float(row[4].replace(',', '.'))+
                            float(row[6].replace(',', '.')))
+                val[-1] = val[-1]/3600
             i+=1
             
     path = "data/%04d/%02d/sol_%02d.csv"%(day.year, day.month, day.day)
